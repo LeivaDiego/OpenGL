@@ -28,16 +28,32 @@ class Buffer(object):
 					 data = self.vertexBuffer,				# Buffer Data
 					 usage = GL_STATIC_DRAW)                # Usage
 
-		# Atributos
+
+		# ATRIBUTOS		
+		
+		# Atributo de Vertices
 		# Especificar que representa el contenido del vertice
 		glVertexAttribPointer(index = 0,						# Attribute Number
 							  size	= 3,						# Attribute Size		
 							  type	= GL_FLOAT,					# Attribute Type
 							  normalized = GL_FALSE,			# Is it Normalized
-							  stride = 4 * 3,					# Stride
+							  stride = 4 * 6,					# Stride
 							  pointer = ctypes.c_void_p(0))		# Offset
-
+		
+		# Activacion de atributo
 		glEnableVertexAttribArray(0)
 
+		# Atributo de Colores
+		glVertexAttribPointer(index = 1,						# Attribute Number
+							  size	= 3,						# Attribute Size		
+							  type	= GL_FLOAT,					# Attribute Type
+							  normalized = GL_FALSE,			# Is it Normalized
+							  stride = 4 * 6,					# Stride
+							  pointer = ctypes.c_void_p(4 * 3))		# Offset
+
+		# Activacion de atributo
+		glEnableVertexAttribArray(1)
+
+
 		# Dibujar en la pantalla
-		glDrawArrays(GL_TRIANGLES, 0, int(len(self.vertexBuffer / 3)))
+		glDrawArrays(GL_TRIANGLES, 0, int(len(self.vertexBuffer / 6)))
