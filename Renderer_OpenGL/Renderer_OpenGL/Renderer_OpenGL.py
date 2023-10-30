@@ -1,11 +1,13 @@
+from OpenGL.GL.shaders import fragment_shader, vertex_shader
 import pygame
 from pygame.locals import * 
 from gl import Renderer
-from buffer import Buffer
+from model import Model
 from shaders import *
+import glm
 
-width = 1920
-height = 1080
+width = 960
+height = 540
 
 pygame.init()
 
@@ -18,11 +20,16 @@ rend.setShader(vertexShader = vertex_shader,
 			   fragmentShader = fragment_shader)
 
 #			Posisciones			Colores
-triangle = [-0.5, -0.5, 0.0,	1.0, 0.0, 0.0,
+triangleData = [-0.5, -0.5, 0.0,	1.0, 0.0, 0.0,
 			 0.0,  0.5, 0.0,	0.0, 1.0, 0.0,
 			 0.5, -0.5, 0.0,	0.0, 0.0, 1.0 ]
 
-rend.scene.append(Buffer(triangle))
+triangleModel = Model(triangleData)
+
+triangleModel.position.z = -5
+triangleModel.scale = glm.vec3(2,2,2)
+
+rend.scene.append(triangleModel)
 
 
 
@@ -46,29 +53,27 @@ while isRunning:
 			if event.key == pygame.K_ESCAPE:
 				isRunning = False
 
-	if keys[K_RIGHT]:
-		if rend.clearColor[0] < 1.0:
-			rend.clearColor[0] += deltaTime
+	if keys[K_d]:
+		rend.camPosition.x -= 5 * deltaTime
 	
-	if keys[K_LEFT]:
-		if rend.clearColor[0] > 0.0:
-			rend.clearColor[0] -= deltaTime
+	if keys[K_a]:
+		rend.camPosition.x += 5 * deltaTime
 
-	if keys[K_UP]:
-		if rend.clearColor[1] < 1.0:
-			rend.clearColor[1] += deltaTime
+	if keys[K_w]:
+		rend.camPosition.y -= 5 * deltaTime
 	
-	if keys[K_DOWN]:
-		if rend.clearColor[1] > 0.0:
-			rend.clearColor[1] -= deltaTime
+	if keys[K_s]:
+		rend.camPosition.y += 5 * deltaTime
 
-	if keys[K_x]:
-		if rend.clearColor[2] < 1.0:
-			rend.clearColor[2] += deltaTime
+	if keys[K_q]:
+		rend.camPosition.z -= 5 * deltaTime
 	
-	if keys[K_z]:
-		if rend.clearColor[2] > 0.0:
-			rend.clearColor[2] -= deltaTime
+	if keys[K_e]:
+		rend.camPosition.z += 5 * deltaTime
+
+	triangleModel.rotation.y += 45 * deltaTime
+
+	rend.elapsedTime += deltaTime
 
 	rend.render()
 
