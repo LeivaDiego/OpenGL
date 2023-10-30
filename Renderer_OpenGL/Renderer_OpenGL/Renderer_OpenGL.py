@@ -19,13 +19,17 @@ rend = Renderer(screen)
 rend.setShader(vertexShader = vertex_shader, 
 			   fragmentShader = fragment_shader)
 
-#			Posisciones			Colores
-triangleData = [-0.5, -0.5, 0.0,	1.0, 0.0, 0.0,
-			 0.0,  0.5, 0.0,	0.0, 1.0, 0.0,
-			 0.5, -0.5, 0.0,	0.0, 0.0, 1.0 ]
+#					Posisciones		Colores				UVs
+triangleData = [-0.5, -0.5, 0.0,	1.0, 0.0, 0.0,		0.0, 0.0, 
+				-0.5,  0.5, 0.0,	0.0, 1.0, 0.0,		0.0, 1.0, 
+				 0.5, -0.5, 0.0,	0.0, 0.0, 1.0,		1.0, 0.0, 
+														 
+				-0.5,  0.5, 0.0,	0.0, 1.0, 0.0,		0.0, 1.0, 
+				 0.5,  0.5, 0.0,	0.0, 1.0, 1.0,		1.0, 1.0, 
+				 0.5, -0.5, 0.0,	0.0, 0.0, 1.0,		1.0, 0.0 ]
 
 triangleModel = Model(triangleData)
-
+triangleModel.loadTexture("textures/wood box.jpg")
 triangleModel.position.z = -5
 triangleModel.scale = glm.vec3(2,2,2)
 

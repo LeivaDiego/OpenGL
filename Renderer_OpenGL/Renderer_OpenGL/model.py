@@ -1,7 +1,7 @@
-from OpenGL.GL import *
 from numpy import array, float32
+from OpenGL.GL import *
+import pygame
 import glm
-
 
 class Model(object):
 
@@ -20,6 +20,12 @@ class Model(object):
 		self.position = glm.vec3(0,0,0)
 		self.rotation = glm.vec3(0,0,0)
 		self.scale = glm.vec3(1,1,1)
+
+
+	def loadTexture(self, texturePath):
+		self.textureSurface = pygame.image.load(texturePath)
+		self.textureData	= pygame.image.tostring(self.textureSurface, "RGB", True)
+		self.textureBuffer	= glGenTextures(1)
 
 
 	def getModelMatrix(self):
@@ -60,23 +66,49 @@ class Model(object):
 							  size	= 3,						# Attribute Size		
 							  type	= GL_FLOAT,					# Attribute Type
 							  normalized = GL_FALSE,			# Is it Normalized
-							  stride = 4 * 6,					# Stride
+							  stride = 4 * 8,					# Stride
 							  pointer = ctypes.c_void_p(0))		# Offset
-		
 		# Activacion de atributo
 		glEnableVertexAttribArray(0)
+
 
 		# Atributo de Colores
 		glVertexAttribPointer(index = 1,						# Attribute Number
 							  size	= 3,						# Attribute Size		
 							  type	= GL_FLOAT,					# Attribute Type
 							  normalized = GL_FALSE,			# Is it Normalized
-							  stride = 4 * 6,					# Stride
-							  pointer = ctypes.c_void_p(4 * 3))		# Offset
-
+							  stride = 4 * 8,					# Stride
+							  pointer = ctypes.c_void_p(4 * 3))	# Offset
 		# Activacion de atributo
 		glEnableVertexAttribArray(1)
 
 
+		# Atributo de UVs (textura)
+		glVertexAttribPointer(index = 2,						# Attribute Number
+							  size	= 2,						# Attribute Size		
+							  type	= GL_FLOAT,					# Attribute Type
+							  normalized = GL_FALSE,			# Is it Normalized
+							  stride = 4 * 8,					# Stride
+							  pointer = ctypes.c_void_p(4 * 6))	# Offset
+		# Activacion de atributo
+		glEnableVertexAttribArray(2)
+
+
+		# Activar la textura del modelo
+		glActiveTexture(GL_TEXTURE0)
+		glBindTexture(GL_TEXTURE_2D, self.textureBuffer)
+		glTexImage2D(GL_TEXTURE_2D,							# Texture Type
+					 0,										# Positions
+					 GL_RGB,								# Internal Format
+					 self.textureSurface.get_width(),		# Width
+					 self.textureSurface.get_height(),		# Height
+					 0,										# Border
+					 GL_RGB,								# Format
+					 GL_UNSIGNED_BYTE,						# Type
+					 self.textureData)						# Data
+
+		glGenerateTextureMipmap(self.textureBuffer)
+
+
 		# Dibujar en la pantalla
-		glDrawArrays(GL_TRIANGLES, 0, int(len(self.vertexBuffer / 6)))
+		glDrawArrays(GL_TRIANGLES, 0, int(len(self.vertexBuffer / 8)))
