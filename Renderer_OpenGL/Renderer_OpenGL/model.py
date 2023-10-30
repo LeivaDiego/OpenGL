@@ -66,32 +66,21 @@ class Model(object):
 							  size	= 3,						# Attribute Size		
 							  type	= GL_FLOAT,					# Attribute Type
 							  normalized = GL_FALSE,			# Is it Normalized
-							  stride = 4 * 8,					# Stride
+							  stride = 4 * 5,					# Stride
 							  pointer = ctypes.c_void_p(0))		# Offset
 		# Activacion de atributo
 		glEnableVertexAttribArray(0)
 
 
-		# Atributo de Colores
-		glVertexAttribPointer(index = 1,						# Attribute Number
-							  size	= 3,						# Attribute Size		
-							  type	= GL_FLOAT,					# Attribute Type
-							  normalized = GL_FALSE,			# Is it Normalized
-							  stride = 4 * 8,					# Stride
-							  pointer = ctypes.c_void_p(4 * 3))	# Offset
-		# Activacion de atributo
-		glEnableVertexAttribArray(1)
-
-
 		# Atributo de UVs (textura)
-		glVertexAttribPointer(index = 2,						# Attribute Number
+		glVertexAttribPointer(index = 1,						# Attribute Number
 							  size	= 2,						# Attribute Size		
 							  type	= GL_FLOAT,					# Attribute Type
 							  normalized = GL_FALSE,			# Is it Normalized
-							  stride = 4 * 8,					# Stride
-							  pointer = ctypes.c_void_p(4 * 6))	# Offset
+							  stride = 4 * 5,					# Stride
+							  pointer = ctypes.c_void_p(4 * 3))	# Offset
 		# Activacion de atributo
-		glEnableVertexAttribArray(2)
+		glEnableVertexAttribArray(1)
 
 
 		# Activar la textura del modelo
@@ -111,4 +100,4 @@ class Model(object):
 
 
 		# Dibujar en la pantalla
-		glDrawArrays(GL_TRIANGLES, 0, int(len(self.vertexBuffer / 8)))
+		glDrawArrays(GL_TRIANGLES, 0, int(len(self.vertexBuffer / 5)))
