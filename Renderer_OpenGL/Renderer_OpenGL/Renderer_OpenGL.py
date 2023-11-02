@@ -20,8 +20,8 @@ rend.setShader(vertexShader = vertex_shader,
 			   fragmentShader = fragment_shader)
 
 
-model = Model("models/luminaris.obj")
-model.loadTexture("textures/luminaris.bmp")
+model = Model("models/ak5.obj")
+model.loadTexture("textures/ak5.bmp")
 model.position.z = -6
 model.scale = glm.vec3(2,2,2)
 model.rotation.x = 45
