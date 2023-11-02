@@ -32,30 +32,34 @@ class Obj(object):
 			if prefix == "f": # Faces
 				self.faces.append([list(map(int, vert.split("/"))) for vert in value.split(" ")])
 
+		self.data = self.get_model_data()
 
 	def get_model_data(self):
 		# Convierte los arrays del .obj a un unico array intercalado
-
-		# Crear listas para datos intercalados
-		vertices = []
-		texcoords = []
-		normals = []
-
-		for face in self.faces:
-			for vertex in face:
-				# Los indices en un archivo .obj comienzan en 1
-				vert_index, tex_index, norm_index = [idx - 1 for idx in vertex]
-				vertices.extend(self.vertices[vert_index])
-				texcoords.extend(self.texcoords[tex_index])
-				normals.extend(self.normals[norm_index])
-
-		# Intercalar los datos
 		data = []
-		for i in range(len(vertices) // 3):
-			data.extend(vertices[i*3:i*3+3])
-			data.extend(texcoords[i*2:i*2+2])
-			data.extend(normals[i*3:i*3+3])
-	
+
+		# Se procesa cada cara y se extraen los datos
+		for face in self.faces:
+			for vert in face:
+				# Se obtienen las coordenadas del vertice
+				vertex_index = vert[0] - 1
+				vertex_coords = self.vertices[vertex_index]
+
+				# Se inicializan los placeholders para las texturas y normales
+				texture_coords = (0, 0)  # Placeholder para las texturas
+				normal_coords = (0, 0, 0)  # Placeholder para las normales
+
+				# Se obtienen las coordenadas de la textura si existen
+				if len(vert) > 1 and vert[1] > 0:
+					texture_coords = self.texcoords[vert[1] - 1]
+
+				# Se obtienen las normales si existen
+				if len(vert) > 2 and vert[2] > 0:
+					normal_coords = self.normals[vert[2] - 1]
+
+				# Se agregan los datos a la lista plana
+				data.extend(vertex_coords)
+				data.extend(texture_coords)
+				data.extend(normal_coords)
+
 		return data
-
-

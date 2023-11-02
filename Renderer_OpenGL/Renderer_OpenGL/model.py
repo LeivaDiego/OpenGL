@@ -9,7 +9,7 @@ class Model(object):
 	def __init__(self, file):
 
 		self.obj = Obj(file)
-		self.data = self.obj.get_model_data()
+		self.data = self.obj.data
 
 		# Constructor del Buffer
 		self.vertexBuffer = array(self.data, dtype = float32)

@@ -6,8 +6,8 @@ from model import Model
 from shaders import *
 import glm
 
-width = 960
-height = 540
+width = 1920
+height = 1080
 
 pygame.init()
 
@@ -20,10 +20,11 @@ rend.setShader(vertexShader = vertex_shader,
 			   fragmentShader = fragment_shader)
 
 
-model = Model("models/model.obj")
-model.loadTexture("textures/model.bmp")
-model.position.z = -5
+model = Model("models/luminaris.obj")
+model.loadTexture("textures/luminaris.bmp")
+model.position.z = -6
 model.scale = glm.vec3(2,2,2)
+model.rotation.x = 45
 
 rend.scene.append(model)
 
