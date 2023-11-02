@@ -17,10 +17,10 @@ out vec2 uvs;
 
 void main()
 {
-    vec4 newPos = vec4(position.x, position.y + sin(time)/4, position.z, 1.0);
+	vec4 newPos = vec4(position.x, position.y + sin(time)/4, position.z, 1.0);
 
-    gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(newPos);
-    uvs = texCoords;
+	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(newPos);
+	uvs = texCoords;
 }
 '''
 
@@ -36,6 +36,6 @@ out vec4 fragmentColor;
 
 void main()
 {
-    fragmentColor = texture(tex, uvs);
+	fragmentColor = texture(tex, uvs);
 }
 '''
