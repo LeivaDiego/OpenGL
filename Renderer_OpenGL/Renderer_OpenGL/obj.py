@@ -31,3 +31,31 @@ class Obj(object):
 				self.normals.append(list(map(float,value.split(" "))))
 			if prefix == "f": # Faces
 				self.faces.append([list(map(int, vert.split("/"))) for vert in value.split(" ")])
+
+
+	def get_model_data(self):
+		# Convierte los arrays del .obj a un unico array intercalado
+
+		# Crear listas para datos intercalados
+		vertices = []
+		texcoords = []
+		normals = []
+
+		for face in self.faces:
+			for vertex in face:
+				# Los indices en un archivo .obj comienzan en 1
+				vert_index, tex_index, norm_index = [idx - 1 for idx in vertex]
+				vertices.extend(self.vertices[vert_index])
+				texcoords.extend(self.texcoords[tex_index])
+				normals.extend(self.normals[norm_index])
+
+		# Intercalar los datos
+		data = []
+		for i in range(len(vertices) // 3):
+			data.extend(vertices[i*3:i*3+3])
+			data.extend(texcoords[i*2:i*2+2])
+			data.extend(normals[i*3:i*3+3])
+	
+		return data
+
+

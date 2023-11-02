@@ -19,23 +19,13 @@ rend = Renderer(screen)
 rend.setShader(vertexShader = vertex_shader, 
 			   fragmentShader = fragment_shader)
 
-#					Posisciones		UVs
-triangleData = [-0.5, -0.5, 0.0,	0.0, 0.0, 
-				-0.5,  0.5, 0.0,	0.0, 1.0, 
-				 0.5, -0.5, 0.0,	1.0, 0.0, 
-								 
-				-0.5,  0.5, 0.0,	0.0, 1.0, 
-				 0.5,  0.5, 0.0,	1.0, 1.0, 
-				 0.5, -0.5, 0.0,	1.0, 0.0 ]
 
-triangleModel = Model(triangleData)
-triangleModel.loadTexture("textures/wood box.jpg")
-triangleModel.position.z = -5
-triangleModel.scale = glm.vec3(2,2,2)
+model = Model("models/model.obj")
+model.loadTexture("textures/model.bmp")
+model.position.z = -5
+model.scale = glm.vec3(2,2,2)
 
-rend.scene.append(triangleModel)
-
-
+rend.scene.append(model)
 
 isRunning = True
 
@@ -75,7 +65,7 @@ while isRunning:
 	if keys[K_e]:
 		rend.camPosition.z += 5 * deltaTime
 
-	triangleModel.rotation.y += 45 * deltaTime
+	model.rotation.y += 45 * deltaTime
 
 	rend.elapsedTime += deltaTime
 

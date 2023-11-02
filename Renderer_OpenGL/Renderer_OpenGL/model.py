@@ -2,13 +2,17 @@ from numpy import array, float32
 from OpenGL.GL import *
 import pygame
 import glm
+from obj import Obj
 
 class Model(object):
 
-	def __init__(self, data):
-		# Constructor del Buffer
+	def __init__(self, file):
 
-		self.vertexBuffer = array(data, dtype = float32)
+		self.obj = Obj(file)
+		self.data = self.obj.get_model_data()
+
+		# Constructor del Buffer
+		self.vertexBuffer = array(self.data, dtype = float32)
 		
 		# Vertex Buffer Object
 		self.VBO = glGenBuffers(1)
@@ -66,7 +70,7 @@ class Model(object):
 							  size	= 3,						# Attribute Size		
 							  type	= GL_FLOAT,					# Attribute Type
 							  normalized = GL_FALSE,			# Is it Normalized
-							  stride = 4 * 5,					# Stride
+							  stride = 4 * 8,					# Stride
 							  pointer = ctypes.c_void_p(0))		# Offset
 		# Activacion de atributo
 		glEnableVertexAttribArray(0)
@@ -77,10 +81,21 @@ class Model(object):
 							  size	= 2,						# Attribute Size		
 							  type	= GL_FLOAT,					# Attribute Type
 							  normalized = GL_FALSE,			# Is it Normalized
-							  stride = 4 * 5,					# Stride
+							  stride = 4 * 8,					# Stride
 							  pointer = ctypes.c_void_p(4 * 3))	# Offset
 		# Activacion de atributo
 		glEnableVertexAttribArray(1)
+
+
+		# Atributo de normales
+		glVertexAttribPointer(index = 2,						# Attribute Number
+							  size	= 3,						# Attribute Size		
+							  type	= GL_FLOAT,					# Attribute Type
+							  normalized = GL_FALSE,			# Is it Normalized
+							  stride = 4 * 8,					# Stride
+							  pointer = ctypes.c_void_p(4 * 5))	# Offset
+		# Activacion de atributo
+		glEnableVertexAttribArray(2)
 
 
 		# Activar la textura del modelo
@@ -100,4 +115,4 @@ class Model(object):
 
 
 		# Dibujar en la pantalla
-		glDrawArrays(GL_TRIANGLES, 0, int(len(self.vertexBuffer / 5)))
+		glDrawArrays(GL_TRIANGLES, 0, int(len(self.vertexBuffer / 8)))
