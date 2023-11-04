@@ -16,16 +16,13 @@ clock = pygame.time.Clock()
 
 rend = Renderer(screen)
 
-rend.setShader(vertexShader = vertex_shader, 
-			   fragmentShader = fragment_shader)
+rend.setShader(vertexShader = starman_vertex, 
+			   fragmentShader = starman_fragment)
 
 
-model = Model("models/ak5.obj")
-model.loadTexture("textures/ak5.bmp")
-model.position.z = -6
-model.scale = glm.vec3(2,2,2)
-model.rotation.x = 45
-
+model = Model("models/model.obj")
+model.loadTexture("textures/model.bmp")
+model.position.z = -5
 rend.scene.append(model)
 
 isRunning = True

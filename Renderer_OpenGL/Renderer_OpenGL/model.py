@@ -25,6 +25,7 @@ class Model(object):
 		self.rotation = glm.vec3(0,0,0)
 		self.scale = glm.vec3(1,1,1)
 
+		self.modelMatrix, self.normalMatrix = self.getModelMatrix()
 
 	def loadTexture(self, texturePath):
 		self.textureSurface = pygame.image.load(texturePath)
@@ -44,8 +45,9 @@ class Model(object):
 		rotationMatrix = pitch * yaw * roll
 
 		scaleMatrix = glm.scale(identity, self.scale)
-
-		return translationMatrix * rotationMatrix * scaleMatrix
+		modelMatrix = translationMatrix * rotationMatrix * scaleMatrix
+		normalMatrix = glm.inverseTranspose(glm.mat3(modelMatrix))
+		return modelMatrix, normalMatrix
 
 
 	def render(self):
