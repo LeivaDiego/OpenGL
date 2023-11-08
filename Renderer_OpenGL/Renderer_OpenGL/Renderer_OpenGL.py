@@ -20,15 +20,19 @@ rend.setShader(vertexShader = vertex_shader,
 			   fragmentShader = fragment_shader)
 
 
-model = Model("models/ak5.obj")
-model.loadTexture("textures/ak5.bmp")
+model = Model("models/model.obj")
+model.loadTexture("textures/model.bmp")
 model.position.z = -6
 model.scale = glm.vec3(2,2,2)
-model.rotation.x = 45
 
 rend.scene.append(model)
 
 isRunning = True
+
+
+# Variables para el seguimiento del movimiento del mouse
+mouse_dragging = False
+last_mouse_position = None
 
 while isRunning:
 
@@ -48,6 +52,29 @@ while isRunning:
 			if event.key == pygame.K_ESCAPE:
 				isRunning = False
 
+		# Rotacion del modelo mediante mouse-drag
+		elif event.type == pygame.MOUSEBUTTONDOWN:
+			if event.button == 1: 
+				mouse_dragging = True
+				last_mouse_position = pygame.mouse.get_pos()
+
+		elif event.type == pygame.MOUSEBUTTONUP:
+			if event.button == 1:  
+				mouse_dragging = False
+
+		elif event.type == pygame.MOUSEMOTION:
+			if mouse_dragging:
+				mouse_position = pygame.mouse.get_pos()
+				dx = mouse_position[0] - last_mouse_position[0]
+				dy = mouse_position[1] - last_mouse_position[1]
+
+				model.rotation.y += dx * 0.2
+				model.rotation.x += dy * 0.2
+
+				last_mouse_position = mouse_position
+
+
+	# Movimiento de camara en los ejes x, y, z
 	if keys[K_d]:
 		rend.camPosition.x -= 5 * deltaTime
 	
@@ -66,7 +93,6 @@ while isRunning:
 	if keys[K_e]:
 		rend.camPosition.z += 5 * deltaTime
 
-	model.rotation.y += 45 * deltaTime
 
 	rend.elapsedTime += deltaTime
 
