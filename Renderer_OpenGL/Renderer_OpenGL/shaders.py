@@ -60,10 +60,10 @@ void main()
 	vec3 normal = normalize(fragNormal);
 	float glowAmount = 1.0 - dot(normal, normalize(camForward - fragPosition));
 	if (glowAmount < 0) glowAmount = 0.0;
-	vec3 glowColor = vec3(0, 1, 1);
+	vec3 glowColor = vec3(1, 1, 0);
 	vec3 color = vec3(textureColor) + glowAmount * glowColor;
 	color = clamp(color, 0.0, 1.0);
-	fragmentColor = vec4(color, textureColor.a);
+	fragmentColor = vec4(color, 1.0);
 }
 '''
 
@@ -101,6 +101,38 @@ void main()
     vec3 color = mix(vec3(textureColor), newColorEffect, glowAmount);
     color = clamp(color, 0.0, 1.0);
 
-    fragmentColor = vec4(color, textureColor.a);
+    fragmentColor = vec4(color, 1.0);
 }
+'''
+
+hologram_shader = '''
+#version 450 core
+layout (binding = 0) uniform sampler2D tex;
+in vec2 uvs;
+in vec3 fragPosition;
+in vec3 fragNormal;
+uniform mat4 camMatrix;
+out vec4 fragmentColor;
+
+void main()
+{
+    vec3 camForward = vec3(camMatrix[0][2], camMatrix[1][2], camMatrix[2][2]);
+    vec3 normal = normalize(fragNormal);
+    float glowAmount = 1.0 - dot(normal, normalize(camForward - fragPosition));
+
+    vec3 hologramColor = vec3(0, 1, 1);
+
+    float linePattern = sin(uvs.x * 100.0) * sin(uvs.y * 100.0);
+    linePattern = clamp(linePattern, 0.0, 1.0);
+
+    vec3 color = mix(hologramColor, hologramColor * linePattern, 0.5);
+    color *= glowAmount;
+    color = clamp(color, 0.0, 1.0);
+
+    float alpha = glowAmount;
+
+    fragmentColor = vec4(color, alpha);
+}
+
+
 '''

@@ -1,4 +1,5 @@
 from OpenGL.GL.shaders import fragment_shader, vertex_shader
+from OpenGL.GL import *
 import pygame
 from pygame.locals import * 
 from gl import Renderer
@@ -17,7 +18,7 @@ clock = pygame.time.Clock()
 rend = Renderer(screen)
 
 rend.setShader(vertexShader = vertex_shader, 
-			   fragmentShader = psycho_shader)
+			   fragmentShader = hologram_shader)
 
 
 model = Model("models/model.obj")
@@ -33,6 +34,7 @@ isRunning = True
 # Variables para el seguimiento del movimiento del mouse
 mouse_dragging = False
 last_mouse_position = None
+
 
 while isRunning:
 
@@ -72,6 +74,7 @@ while isRunning:
 				model.rotation.x += dy * 0.2
 
 				last_mouse_position = mouse_position
+			
 
 
 	# Movimiento de camara en los ejes x, y, z

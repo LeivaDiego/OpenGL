@@ -13,6 +13,10 @@ class Renderer(object):
 		self.clearColor = [0,0,0] # RGB
 		
 		glEnable(GL_DEPTH_TEST)
+		glEnable(GL_CULL_FACE)
+		glCullFace(GL_BACK)
+		glEnable(GL_BLEND)
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 		glViewport(0,0,self.width, self.height)
 
 		self.scene = []
