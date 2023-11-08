@@ -45,8 +45,29 @@ void main()
 }
 '''
 
-
 glow_shader = '''
+#version 450 core
+layout (binding = 0) uniform sampler2D tex;
+in vec2 uvs;
+in vec3 fragPosition;
+in vec3 fragNormal;
+uniform mat4 camMatrix;
+out vec4 fragmentColor;
+void main()
+{
+	vec4 textureColor = texture(tex, uvs);
+	vec3 camForward = vec3(camMatrix[0][2], camMatrix[1][2], camMatrix[2][2]);
+	vec3 normal = normalize(fragNormal);
+	float glowAmount = 1.0 - dot(normal, normalize(camForward - fragPosition));
+	if (glowAmount < 0) glowAmount = 0.0;
+	vec3 glowColor = vec3(0, 1, 1);
+	vec3 color = vec3(textureColor) + glowAmount * glowColor;
+	color = clamp(color, 0.0, 1.0);
+	fragmentColor = vec4(color, textureColor.a);
+}
+'''
+
+psycho_shader = '''
 #version 450 core
 
 layout (binding = 0) uniform sampler2D tex;
@@ -56,22 +77,30 @@ in vec3 fragPosition;
 in vec3 fragNormal;
 
 uniform mat4 camMatrix;
+uniform float time;
 
 out vec4 fragmentColor;
 
+#define TWO_PI 6.28318530718
+
 void main()
 {
-	vec4 textureColor = texture(tex, uvs);
+    vec4 textureColor = texture(tex, uvs);
 
-	vec3 camForward = vec3(camMatrix[0][2], camMatrix[1][2], camMatrix[2][2]);
-	vec3 normal = normalize(fragNormal);
-	float glowAmount = 1.0 - dot(normal, normalize(camForward - fragPosition));
-	if (glowAmount < 0) glowAmount = 0.0;
+    vec3 camForward = vec3(camMatrix[0][2], camMatrix[1][2], camMatrix[2][2]);
+    vec3 normal = normalize(fragNormal);
+    float glowAmount = 1.0 - dot(normal, normalize(camForward - fragPosition));
+    glowAmount = max(glowAmount, 0.0);
 
-	vec3 glowColor = vec3(0, 1, 1);
-	vec3 color = vec3(textureColor) + glowAmount * glowColor;
-	color = clamp(color, 0.0, 1.0);
+    float diagonalValue = length(fragPosition.xy - vec2(0.5)) + time/2;
+    float rGlow = abs(sin(diagonalValue * TWO_PI));
+    float gGlow = abs(sin((diagonalValue + 1.0 / 3.0) * TWO_PI));
+    float bGlow = abs(sin((diagonalValue + 2.0 / 3.0) * TWO_PI));
+    vec3 newColorEffect = vec3(rGlow, gGlow, bGlow);
 
-	fragmentColor = vec4(color, textureColor.a);
+    vec3 color = mix(vec3(textureColor), newColorEffect, glowAmount);
+    color = clamp(color, 0.0, 1.0);
+
+    fragmentColor = vec4(color, textureColor.a);
 }
 '''

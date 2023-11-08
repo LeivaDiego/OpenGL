@@ -17,7 +17,7 @@ clock = pygame.time.Clock()
 rend = Renderer(screen)
 
 rend.setShader(vertexShader = vertex_shader, 
-			   fragmentShader = glow_shader)
+			   fragmentShader = psycho_shader)
 
 
 model = Model("models/model.obj")
