@@ -17,8 +17,8 @@ clock = pygame.time.Clock()
 
 rend = Renderer(screen)
 
-rend.setShader(vertexShader = vertex_shader, 
-			   fragmentShader = hologram_shader)
+rend.setShader(vertexShader = minecraft_vertex, 
+			   fragmentShader = glow_shader)
 
 
 model = Model("models/model.obj")

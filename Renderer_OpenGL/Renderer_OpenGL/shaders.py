@@ -29,6 +29,39 @@ void main()
 
 '''
 
+minecraft_vertex = '''
+#version 450 core
+
+layout (location = 0) in vec3 position;
+layout (location = 1) in vec2 texCoords;
+layout (location = 2) in vec3 normals;
+
+uniform mat4 modelMatrix;
+uniform mat4 viewMatrix;
+uniform mat4 projectionMatrix;
+uniform mat4 camMatrix;
+
+out vec2 uvs;
+out vec3 fragPosition;
+out vec3 fragNormal;
+
+vec3 pixelate(vec3 value, float gridSize) {
+    return floor(value / gridSize) * gridSize;
+}
+
+void main()
+{
+    vec3 pixelatedPosition = pixelate(position, 0.1);
+    vec3 pixelatedNormal = pixelate(normals, 0.1);
+
+    vec4 worldPosition = modelMatrix * vec4(pixelatedPosition, 1.0);
+    fragPosition = vec3(worldPosition);
+    fragNormal = mat3(modelMatrix) * pixelatedNormal;
+
+    gl_Position = projectionMatrix * viewMatrix * worldPosition;
+    uvs = texCoords;
+}
+'''
 
 fragment_shader = '''
 #version 450 core
