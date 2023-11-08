@@ -48,6 +48,22 @@ class Renderer(object):
 		return glm.inverse(camMatrix)
 
 
+	def getCamMatrix(self):
+		identity = glm.mat4(1)
+
+		translationMatrix = glm.translate(identity, self.camPosition)
+
+		pitch = glm.rotate(identity, glm.radians(self.camRotation.x), glm.vec3(1,0,0))		# Rotacion en X (pitch)
+		yaw	  = glm.rotate(identity, glm.radians(self.camRotation.y), glm.vec3(0,1,0))		# Rotacion en Y (yaw)
+		roll  = glm.rotate(identity, glm.radians(self.camRotation.z), glm.vec3(0,0,1))		# Rotacion en Z (roll)
+
+		rotationMatrix = pitch * yaw * roll
+
+		camMatrix = translationMatrix * rotationMatrix
+
+		return camMatrix
+
+
 	def setShader(self, vertexShader, fragmentShader):
 		if vertexShader is not None and fragmentShader is not None:
 			self.activeShader = compileProgram(compileShader(vertexShader, GL_VERTEX_SHADER),
@@ -71,6 +87,9 @@ class Renderer(object):
 
 			glUniformMatrix4fv(glGetUniformLocation(self.activeShader,"projectionMatrix"),
 								1, GL_FALSE, glm.value_ptr(self.projectionMatirx))
+
+			glUniformMatrix4fv(glGetUniformLocation(self.activeShader,"camMatrix"),
+								1, GL_FALSE, glm.value_ptr(self.getCamMatrix()))
 
 			glUniform1f(glGetUniformLocation(self.activeShader, "time"), self.elapsedTime)
 

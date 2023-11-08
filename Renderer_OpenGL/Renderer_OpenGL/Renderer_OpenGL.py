@@ -17,7 +17,7 @@ clock = pygame.time.Clock()
 rend = Renderer(screen)
 
 rend.setShader(vertexShader = vertex_shader, 
-			   fragmentShader = fragment_shader)
+			   fragmentShader = glow_shader)
 
 
 model = Model("models/model.obj")
@@ -93,6 +93,7 @@ while isRunning:
 	if keys[K_e]:
 		rend.camPosition.z += 5 * deltaTime
 
+	model.rotation.y  += 25 * deltaTime
 
 	rend.elapsedTime += deltaTime
 
