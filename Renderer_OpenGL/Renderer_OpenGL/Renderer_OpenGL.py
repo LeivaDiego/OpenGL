@@ -28,10 +28,9 @@ rend.setShader(vertexShader = vertex_shader,
 			   fragmentShader = fragment_shader)
 
 # Carga y configuracion del modelo
-model = Model("models/model.obj")
-model.loadTexture("textures/model.bmp")
-model.position.z = -6
-model.scale = glm.vec3(2,2,2)
+model = Model("models/mario.obj")
+model.loadTexture("textures/mario.jpg")
+model.position.z = -7.5
 
 # Anadir el modelo a la escena
 rend.scene.append(model)
@@ -124,7 +123,7 @@ while isRunning:
 		rend.camPosition.z += 5 * deltaTime
 
 	# Rotacion automatica del modelo
-	model.rotation.y += 25 * deltaTime
+	model.rotation.y += 45 * deltaTime
 
 	# Actualizar el tiempo transcurrido y renderizar la escena
 	rend.elapsedTime += deltaTime
