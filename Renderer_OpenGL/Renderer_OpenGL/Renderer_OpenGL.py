@@ -1,3 +1,4 @@
+# Importacion de las bibliotecas necesarias
 from OpenGL.GL.shaders import fragment_shader, vertex_shader
 from OpenGL.GL import *
 import pygame
@@ -7,63 +8,72 @@ from model import Model
 from shaders import *
 import glm
 
+# Configuracion inicial de las dimensiones de la ventana
 width = 1920
 height = 1080
 
+# Inicializacion de Pygame
 pygame.init()
 
+# Creacion de la ventana con soporte para OpenGL y doble buffer
 screen = pygame.display.set_mode((width, height), pygame.OPENGL | pygame.DOUBLEBUF)
+# Reloj para control de FPS
 clock = pygame.time.Clock()
 
+# Creacion del objeto Renderer
 rend = Renderer(screen)
 
+# Establecimiento de los shaders para el renderizado
 rend.setShader(vertexShader = minecraft_vertex, 
-			   fragmentShader = glow_shader)
+			   fragmentShader = fragment_shader)
 
-
+# Carga y configuracion del modelo
 model = Model("models/model.obj")
 model.loadTexture("textures/model.bmp")
 model.position.z = -6
 model.scale = glm.vec3(2,2,2)
 
+# Anadir el modelo a la escena
 rend.scene.append(model)
 
+# Variable para controlar el ciclo principal
 isRunning = True
-
 
 # Variables para el seguimiento del movimiento del mouse
 mouse_dragging = False
 last_mouse_position = None
 
-
+# Bucle principal
 while isRunning:
 
-	# 60 FPS
+	# Configuracion de 60 FPS
 	deltaTime = clock.tick(60) / 1000
 
 	# Lista de teclas presionadas
 	keys = pygame.key.get_pressed()
 
 	for event in pygame.event.get():
-		# Presiona la x
+		# Evento de salida
 		if event.type == pygame.QUIT:
 			isRunning = False
 
-		# Presiona la tecla esc
+		# Evento para cerrar con la tecla ESC
 		elif event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_ESCAPE:
 				isRunning = False
 
-		# Rotacion del modelo mediante mouse-drag
+		# Inicio de la rotacion del modelo con el mouse
 		elif event.type == pygame.MOUSEBUTTONDOWN:
 			if event.button == 1: 
 				mouse_dragging = True
 				last_mouse_position = pygame.mouse.get_pos()
 
+		# Fin de la rotacion del modelo con el mouse
 		elif event.type == pygame.MOUSEBUTTONUP:
 			if event.button == 1:  
 				mouse_dragging = False
 
+		# Movimiento del mouse para rotar el modelo
 		elif event.type == pygame.MOUSEMOTION:
 			if mouse_dragging:
 				mouse_position = pygame.mouse.get_pos()
@@ -74,10 +84,9 @@ while isRunning:
 				model.rotation.x += dy * 0.2
 
 				last_mouse_position = mouse_position
-			
+	
 
-
-	# Movimiento de camara en los ejes x, y, z
+	# Movimiento de la camara con las teclas WASDQE
 	if keys[K_d]:
 		rend.camPosition.x -= 5 * deltaTime
 	
@@ -96,12 +105,15 @@ while isRunning:
 	if keys[K_e]:
 		rend.camPosition.z += 5 * deltaTime
 
-	model.rotation.y  += 25 * deltaTime
+	# Rotacion automatica del modelo
+	model.rotation.y += 25 * deltaTime
 
+	# Actualizar el tiempo transcurrido y renderizar la escena
 	rend.elapsedTime += deltaTime
-
 	rend.render()
 
+	# Actualizar la pantalla
 	pygame.display.flip()
 
+# Finalizar Pygame al salir del bucle
 pygame.quit()
