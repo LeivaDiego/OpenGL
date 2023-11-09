@@ -63,8 +63,8 @@ vec3 pixelate(vec3 value, float gridSize) {
 void main()
 {
 	// Aplicacion del efecto de pixelado
-	vec3 pixelatedPosition = pixelate(position, 0.1);
-	vec3 pixelatedNormal = pixelate(normals, 0.1);
+	vec3 pixelatedPosition = pixelate(position, 0.2);
+	vec3 pixelatedNormal = pixelate(normals, 0.2);
 
 	// Transformacion del vertice al espacio del mundo con pixelado
 	vec4 worldPosition = modelMatrix * vec4(pixelatedPosition, 1.0);

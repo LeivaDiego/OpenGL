@@ -123,7 +123,7 @@ while isRunning:
 		rend.camPosition.z += 5 * deltaTime
 
 	# Rotacion automatica del modelo
-	model.rotation.y += 45 * deltaTime
+	#model.rotation.y += 45 * deltaTime
 
 	# Actualizar el tiempo transcurrido y renderizar la escena
 	rend.elapsedTime += deltaTime
