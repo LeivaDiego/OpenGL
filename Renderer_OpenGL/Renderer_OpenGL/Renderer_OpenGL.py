@@ -24,7 +24,7 @@ clock = pygame.time.Clock()
 rend = Renderer(screen)
 
 # Establecimiento de los shaders para el renderizado
-rend.setShader(vertexShader = minecraft_vertex, 
+rend.setShader(vertexShader = vertex_shader, 
 			   fragmentShader = fragment_shader)
 
 # Carga y configuracion del modelo
@@ -42,6 +42,19 @@ isRunning = True
 # Variables para el seguimiento del movimiento del mouse
 mouse_dragging = False
 last_mouse_position = None
+
+
+# Mapeo de teclas a combinaciones de shaders
+shaders_mapping = {
+    pygame.K_1: (vertex_shader, fragment_shader),
+    pygame.K_2: (minecraft_vertex, fragment_shader),
+    pygame.K_3: (vertex_shader, glow_shader),
+    pygame.K_4: (minecraft_vertex, glow_shader),
+    pygame.K_5: (vertex_shader, hologram_shader),
+    pygame.K_6: (minecraft_vertex, hologram_shader),
+    pygame.K_7: (vertex_shader, psycho_shader),
+    pygame.K_8: (minecraft_vertex, psycho_shader)
+}
 
 # Bucle principal
 while isRunning:
@@ -61,6 +74,11 @@ while isRunning:
 		elif event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_ESCAPE:
 				isRunning = False
+
+			if event.key in shaders_mapping:
+				# Cambia los shaders segun la tecla presionada
+				vertex_shader, fragment_shader = shaders_mapping[event.key]
+				rend.setShader(vertexShader=vertex_shader, fragmentShader=fragment_shader)
 
 		# Inicio de la rotacion del modelo con el mouse
 		elif event.type == pygame.MOUSEBUTTONDOWN:
