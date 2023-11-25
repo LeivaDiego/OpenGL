@@ -25,12 +25,12 @@ clock = pygame.time.Clock()
 # Creacion del objeto Renderer
 rend = Renderer(screen)
 
-skyboxTextures = ["skybox/right.jpg",
-				  "skybox/left.jpg",
-				  "skybox/top.jpg",
-				  "skybox/bottom.jpg",
-				  "skybox/front.jpg",
-				  "skybox/back.jpg"]
+skyboxTextures = ["skybox/right.jpeg",
+				  "skybox/left.jpeg",
+				  "skybox/top.jpeg",
+				  "skybox/bottom.jpeg",
+				  "skybox/front.jpeg",
+				  "skybox/back.jpeg"]
 
 rend.createSkybox(skyboxTextures, skybox_vertex, skybox_fragment)
 
