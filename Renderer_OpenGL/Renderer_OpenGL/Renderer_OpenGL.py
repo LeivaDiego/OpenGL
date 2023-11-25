@@ -36,15 +36,40 @@ rend.createSkybox(skyboxTextures, skybox_vertex, skybox_fragment)
 rend.setShader(vertexShader = vertex_shader, 
 			   fragmentShader = fragment_shader)
 
+current_model = 0
+
+models = []
+
 # Carga y configuracion del modelo
-model = Model("models/mario.obj")
-model.loadTexture("textures/mario.jpg")
-model.position.z = -7.5
+
+mario = Model("models/mario.obj")
+mario.loadTexture("textures/mario.jpg")
+mario.position.z = -7.5
+models.append(mario)
+
+luigi = Model("models/luigi.obj")
+luigi.loadTexture("textures/luigi.jpg")
+luigi.position.z = -7.5
+models.append(luigi)
+
+goomba = Model("models/goomba.obj")
+goomba.loadTexture("textures/goomba.png")
+goomba.position.z = -7.5
+models.append(goomba)
+
+bill = Model("models/bill.obj")
+bill.loadTexture("textures/bill.png")
+bill.position.z = -7.5
+models.append(bill)
+
+
+
+
 
 # Anadir el modelo a la escena
-rend.scene.append(model)
+rend.scene.append(models[current_model])
 
-rend.target.z = model.position.z
+rend.target.z = -7.5
 
 # Variable para controlar el ciclo principal
 isRunning = True
@@ -56,15 +81,27 @@ last_mouse_position = None
 
 # Mapeo de teclas a combinaciones de shaders
 shaders_mapping = {
-    pygame.K_1: (vertex_shader, fragment_shader),
-    pygame.K_2: (minecraft_vertex, fragment_shader),
-    pygame.K_3: (vertex_shader, glow_shader),
-    pygame.K_4: (minecraft_vertex, glow_shader),
-    pygame.K_5: (vertex_shader, hologram_shader),
-    pygame.K_6: (minecraft_vertex, hologram_shader),
-    pygame.K_7: (vertex_shader, psycho_shader),
-    pygame.K_8: (minecraft_vertex, psycho_shader)
+	pygame.K_1: (vertex_shader, fragment_shader),
+	pygame.K_2: (minecraft_vertex, fragment_shader),
+	pygame.K_3: (vertex_shader, glow_shader),
+	pygame.K_4: (minecraft_vertex, glow_shader),
+	pygame.K_5: (vertex_shader, hologram_shader),
+	pygame.K_6: (minecraft_vertex, hologram_shader),
+	pygame.K_7: (vertex_shader, psycho_shader),
+	pygame.K_8: (minecraft_vertex, psycho_shader)
 }
+
+
+def change_model(direction):
+	global current_model
+	if direction == "next":
+		current_model = (current_model + 1) % len(models)
+	elif direction == "previous":
+		current_model = (current_model - 1) % len(models)
+
+	rend.scene.clear()
+	rend.scene.append(models[current_model])
+
 
 # Bucle principal
 while isRunning:
@@ -89,6 +126,13 @@ while isRunning:
 				# Cambia los shaders segun la tecla presionada
 				vertex_shader, fragment_shader = shaders_mapping[event.key]
 				rend.setShader(vertexShader=vertex_shader, fragmentShader=fragment_shader)
+				
+			if event.key == pygame.K_LEFT:
+				change_model("previous")
+
+			# Cambiar al modelo siguiente con la flecha derecha
+			if event.key == pygame.K_RIGHT:
+				change_model("next")
 
 		# Inicio de la rotacion del modelo con el mouse
 		elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -108,30 +152,14 @@ while isRunning:
 				dx = mouse_position[0] - last_mouse_position[0]
 				dy = mouse_position[1] - last_mouse_position[1]
 
-				model.rotation.y += dx * 0.2
-				model.rotation.x += dy * 0.2
+				goomba.rotation.y += dx * 0.2
+				goomba.rotation.x += dy * 0.2
 
 				last_mouse_position = mouse_position
 			
 		elif event.type == pygame.MOUSEWHEEL:
 			rend.camPosition.z += event.y
-	
 
-	# Movimiento de la camara con las teclas WASDQE
-	if keys[K_d]:
-		rend.camPosition.x -= 5 * deltaTime
-	
-	if keys[K_a]:
-		rend.camPosition.x += 5 * deltaTime
-
-	if keys[K_w]:
-		rend.camPosition.y -= 5 * deltaTime
-	
-	if keys[K_s]:
-		rend.camPosition.y += 5 * deltaTime
-
-	# Rotacion automatica del modelo
-	#model.rotation.y += 45 * deltaTime
 
 	# Actualizar el tiempo transcurrido y renderizar la escena
 	rend.elapsedTime += deltaTime
