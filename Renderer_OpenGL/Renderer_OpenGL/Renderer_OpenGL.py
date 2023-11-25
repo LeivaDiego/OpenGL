@@ -17,6 +17,11 @@ height = 1080
 # Inicializacion de Pygame
 pygame.init()
 
+# Play a la musica
+pygame.mixer.init()
+pygame.mixer.music.load("music/MarioTheme.mp3")
+pygame.mixer.music.play(-1)
+
 # Creacion de la ventana con soporte para OpenGL y doble buffer
 screen = pygame.display.set_mode((width, height), pygame.OPENGL | pygame.DOUBLEBUF)
 # Reloj para control de FPS
