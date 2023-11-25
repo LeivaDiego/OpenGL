@@ -112,6 +112,9 @@ while isRunning:
 				model.rotation.x += dy * 0.2
 
 				last_mouse_position = mouse_position
+			
+		elif event.type == pygame.MOUSEWHEEL:
+			rend.camPosition.z += event.y
 	
 
 	# Movimiento de la camara con las teclas WASDQE
@@ -126,12 +129,6 @@ while isRunning:
 	
 	if keys[K_s]:
 		rend.camPosition.y += 5 * deltaTime
-
-	if keys[K_q]:
-		rend.camPosition.z -= 5 * deltaTime
-	
-	if keys[K_e]:
-		rend.camPosition.z += 5 * deltaTime
 
 	# Rotacion automatica del modelo
 	#model.rotation.y += 45 * deltaTime
