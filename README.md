@@ -34,20 +34,3 @@
   - Para disminuir el tamaño del pixel presione s
 
  ![Pixel-Controller](https://github.com/LeivaDiego/Renderer_OpenGL/assets/110699607/d3353590-ea5c-4a5f-9a78-08e3b3e5f3ca)
-
-
-## Entrega OGL1: 3D Models & Transforms
-La entrega se encuentra en la rama 'OGL1'
-### Preview
-![captura nave 2](https://github.com/LeivaDiego/Renderer_OpenGL/assets/110699607/c07f7b5e-5519-48e0-bdf3-f22ce64c7210)
-
-## Entrega 1 Lab 4: Shaders II
-La primera entrega del laboratorio 4 de shaders se encuentra en la rama 'lab4'
-### Preview
-![Captura Shaders v1](https://github.com/LeivaDiego/Renderer_OpenGL/assets/110699607/a2e8db5b-00f2-49e8-b01c-21f308d009d7)
-
-## Entrega 2 Lab 4
-La entrega final esta en la rama "Lab4V2"
-### Preview
-https://github.com/LeivaDiego/Renderer_OpenGL/assets/110699607/7bf84fc7-91cb-410e-8426-39569edbc100
-
