@@ -107,24 +107,26 @@ in vec2 uvs; // Coordenadas de textura
 in vec3 fragPosition; // Posicion del fragmento
 in vec3 fragNormal; // Normal del fragmento
 uniform mat4 camMatrix; // Matriz de la camara
+uniform vec3 camPosition; // Posicion de la camara
 
 out vec4 fragmentColor; // Color del fragmento
 
 void main()
 {
-	vec4 textureColor = texture(tex, uvs); // Color de la textura
-	vec3 camForward = vec3(camMatrix[0][2], camMatrix[1][2], camMatrix[2][2]); // Direccion de la camara
-	vec3 normal = normalize(fragNormal); // Normal normalizada
-	// Calculo del brillo basado en la normal y la direccion de la camara
-	float glowAmount = 1.0 - dot(normal, normalize(camForward - fragPosition));
-	if (glowAmount < 0) glowAmount = 0.0;
+    vec4 textureColor = texture(tex, uvs); // Color de la textura
+    vec3 normal = normalize(fragNormal); // Normal normalizada
 
-	vec3 glowColor = vec3(1, 1, 0); // Color del brillo
-	// Mezclar el color de la textura con el brillo
-	vec3 color = vec3(textureColor) + glowAmount * glowColor;
-	color = clamp(color, 0.0, 1.0); // Asegurar que el color este dentro de los limites
+    // Calculo del brillo basado en la normal y la direccion desde el fragmento a la camara
+    vec3 toCameraDir = normalize(camPosition - fragPosition);
+    float glowAmount = 1.0 - dot(normal, toCameraDir);
+    if (glowAmount < 0) glowAmount = 0.0;
 
-	fragmentColor = vec4(color, 1.0); // Asignar el color del fragmento
+    vec3 glowColor = vec3(1, 1, 0); // Color del brillo
+    // Mezclar el color de la textura con el brillo
+    vec3 color = vec3(textureColor) + glowAmount * glowColor;
+    color = clamp(color, 0.0, 1.0); // Asegurar que el color este dentro de los limites
+
+    fragmentColor = vec4(color, 1.0); // Asignar el color del fragmento
 }
 '''
 
