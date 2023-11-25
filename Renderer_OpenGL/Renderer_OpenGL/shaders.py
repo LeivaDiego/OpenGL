@@ -140,6 +140,7 @@ in vec2 uvs; // Coordenadas de textura
 in vec3 fragPosition; // Posicion del fragmento
 in vec3 fragNormal; // Normal del fragmento
 
+uniform vec3 camPosition; // Posicion de la camara
 uniform mat4 camMatrix; // Matriz de la camara
 uniform float time; // Tiempo
 
@@ -150,12 +151,12 @@ out vec4 fragmentColor; // Color del fragmento
 void main()
 {
 	vec4 textureColor = texture(tex, uvs); // Color de la textura
+    vec3 normal = normalize(fragNormal); // Normal normalizada
 
-	vec3 camForward = vec3(camMatrix[0][2], camMatrix[1][2], camMatrix[2][2]); // Direccion de la camara
-	vec3 normal = normalize(fragNormal); // Normal normalizada
-	// Calculo del brillo basado en la normal y la direccion de la camara
-	float glowAmount = 1.0 - dot(normal, normalize(camForward - fragPosition));
-	glowAmount = max(glowAmount, 0.0);
+    // Calculo del brillo basado en la normal y la direccion desde el fragmento a la camara
+    vec3 toCameraDir = normalize(camPosition - fragPosition);
+    float glowAmount = 1.0 - dot(normal, toCameraDir);
+    if (glowAmount < 0) glowAmount = 0.0;
 
 	// Calculo de los valores de brillo para efecto psicodelico
 	float diagonalValue = length(fragPosition.xy - vec2(0.5)) + time / 2;
@@ -182,18 +183,21 @@ layout (binding = 0) uniform sampler2D tex; // Textura
 in vec2 uvs; // Coordenadas de textura
 in vec3 fragPosition; // Posicion del fragmento
 in vec3 fragNormal; // Normal del fragmento
+
+uniform vec3 camPosition; // Posicion de la camara
 uniform mat4 camMatrix; // Matriz de la camara
 
 out vec4 fragmentColor; // Color del fragmento
 
 void main()
 {
-	// Calcular la direccion de la camara
-	vec3 camForward = vec3(camMatrix[0][2], camMatrix[1][2], camMatrix[2][2]);
-	// Normalizar la normal del fragmento
-	vec3 normal = normalize(fragNormal);
-	// Calcular el brillo basado en la normal y la direccion de la camara
-	float glowAmount = 1.0 - dot(normal, normalize(camForward - fragPosition));
+	vec4 textureColor = texture(tex, uvs); // Color de la textura
+    vec3 normal = normalize(fragNormal); // Normal normalizada
+
+    // Calculo del brillo basado en la normal y la direccion desde el fragmento a la camara
+    vec3 toCameraDir = normalize(camPosition - fragPosition);
+    float glowAmount = 1.0 - dot(normal, toCameraDir);
+    if (glowAmount < 0) glowAmount = 0.0;
 
 	// Definir el color del holograma (cian)
 	vec3 hologramColor = vec3(0, 1, 1);
