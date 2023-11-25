@@ -10,14 +10,17 @@
 - Para hacer zoom in mover el mouse wheel para arriba
 - para hacer zoom out mover el mouse wheel para abajo
 
-**Navegacion de modelos y shaders**
+**Navegacion de modelos**
 - Para cambiar de modelo solo tiene que presionar la tecla flecha izquierda o flecha derecha
   -   Para visualizar el siguiente modelo presione derecha
   -  Para visualizar el modelo anterior presione izquierda
-
+**Navegacion de shaders**
 - Para cambiar los shader solo tiene que presionar las teclas flecha arriba, flecha abajo 
   -   Para activar el shader siguiente presione arriba
   -   Para activar el shader anterior presione abajo
+- Para modificar la cantidad de pixelado para el shader de pixel, solo tiene que presionar la tecla w, telca s
+  - Para incrementar el tamaño del pixel presione w
+  - Para disminuir el tamaño del pixel presione s
 
 ## Entrega OGL1: 3D Models & Transforms
 La entrega se encuentra en la rama 'OGL1'
