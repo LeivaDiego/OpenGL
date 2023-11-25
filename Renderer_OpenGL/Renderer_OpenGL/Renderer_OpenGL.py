@@ -7,6 +7,8 @@ from gl import Renderer
 from model import Model
 from shaders import *
 import glm
+import math
+
 
 # Configuracion inicial de las dimensiones de la ventana
 width = 1920
@@ -78,14 +80,14 @@ last_mouse_position = None
 
 # Mapeo de teclas a combinaciones de shaders
 shader_pairs = [
-    (vertex_shader, fragment_shader),
-    (minecraft_vertex, fragment_shader),
-    (vertex_shader, glow_shader),
-    (minecraft_vertex, glow_shader),
-    (vertex_shader, hologram_shader),
-    (minecraft_vertex, hologram_shader),
-    (vertex_shader, psycho_shader),
-    (minecraft_vertex, psycho_shader)
+	(vertex_shader, fragment_shader),
+	(minecraft_vertex, fragment_shader),
+	(vertex_shader, glow_shader),
+	(minecraft_vertex, glow_shader),
+	(vertex_shader, hologram_shader),
+	(minecraft_vertex, hologram_shader),
+	(vertex_shader, psycho_shader),
+	(minecraft_vertex, psycho_shader)
 ]
 
 
@@ -110,12 +112,28 @@ def change_shader_pair(direction):
 	vertex_shader, fragment_shader = shader_pairs[current_shader_pair]
 	rend.setShader(vertexShader=vertex_shader, fragmentShader=fragment_shader)
 
+movement_sensitive = 0.1
+sens_x = 0.2
+sens_y = 0.2
+distance = abs(rend.camPosition.z - models[current_model].position.z)
+radius = distance
+zoom_sensitive = 0.5
+angle = 0.0
+angle_y = 0.0
+
 
 # Bucle principal
 while isRunning:
 
 	# Configuracion de 60 FPS
 	deltaTime = clock.tick(60) / 1000
+	
+	# Actualizacion de la posicion de la camara en X y Z
+	rend.camPosition.x = math.sin(math.radians(angle)) * radius + models[current_model].position.x
+	rend.camPosition.z = math.cos(math.radians(angle)) * radius + models[current_model].position.z
+
+	# Actualizacion de la posicion de la camara en Y
+	rend.camPosition.y = math.sin(math.radians(angle_y)) * radius + models[current_model].position.y
 
 	# Lista de teclas presionadas
 	keys = pygame.key.get_pressed()
@@ -153,20 +171,28 @@ while isRunning:
 			if event.button == 1:  
 				mouse_dragging = False
 
-		# Movimiento del mouse para rotar el modelo
 		elif event.type == pygame.MOUSEMOTION:
 			if mouse_dragging:
-				mouse_position = pygame.mouse.get_pos()
-				dx = mouse_position[0] - last_mouse_position[0]
-				dy = mouse_position[1] - last_mouse_position[1]
+				new_position = pygame.mouse.get_pos()
+				deltax = new_position[0] - last_mouse_position[0]
+				deltay = new_position[1] - last_mouse_position[1]
 
-				goomba.rotation.y += dx * 0.2
-				goomba.rotation.x += dy * 0.2
+				angle += deltax * -sens_x
+				angle_y += deltay * sens_y
 
-				last_mouse_position = mouse_position
-			
+				if angle > 360:
+					angle = 0
+				if angle_y > 360:
+					angle_y = 0
+
+				last_mouse_position = new_position
+
+		# Zoom de la cámara con la rueda del mouse
 		elif event.type == pygame.MOUSEWHEEL:
-			rend.camPosition.z += event.y
+			if event.y > 0 and radius > distance * 0.5:
+				radius -= zoom_sensitive
+			elif event.y < 0 and radius < distance * 1.5:
+				radius += zoom_sensitive
 
 
 	# Actualizar el tiempo transcurrido y renderizar la escena
