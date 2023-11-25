@@ -37,11 +37,11 @@ rend.setShader(vertexShader = vertex_shader,
 			   fragmentShader = fragment_shader)
 
 current_model = 0
+current_shader_pair = 0
 
 models = []
 
-# Carga y configuracion del modelo
-
+# Carga y configuracion del modelos
 mario = Model("models/mario.obj")
 mario.loadTexture("textures/mario.jpg")
 mario.position.z = -7.5
@@ -63,9 +63,6 @@ bill.position.z = -7.5
 models.append(bill)
 
 
-
-
-
 # Anadir el modelo a la escena
 rend.scene.append(models[current_model])
 
@@ -80,16 +77,16 @@ last_mouse_position = None
 
 
 # Mapeo de teclas a combinaciones de shaders
-shaders_mapping = {
-	pygame.K_1: (vertex_shader, fragment_shader),
-	pygame.K_2: (minecraft_vertex, fragment_shader),
-	pygame.K_3: (vertex_shader, glow_shader),
-	pygame.K_4: (minecraft_vertex, glow_shader),
-	pygame.K_5: (vertex_shader, hologram_shader),
-	pygame.K_6: (minecraft_vertex, hologram_shader),
-	pygame.K_7: (vertex_shader, psycho_shader),
-	pygame.K_8: (minecraft_vertex, psycho_shader)
-}
+shader_pairs = [
+    (vertex_shader, fragment_shader),
+    (minecraft_vertex, fragment_shader),
+    (vertex_shader, glow_shader),
+    (minecraft_vertex, glow_shader),
+    (vertex_shader, hologram_shader),
+    (minecraft_vertex, hologram_shader),
+    (vertex_shader, psycho_shader),
+    (minecraft_vertex, psycho_shader)
+]
 
 
 def change_model(direction):
@@ -101,6 +98,17 @@ def change_model(direction):
 
 	rend.scene.clear()
 	rend.scene.append(models[current_model])
+
+
+def change_shader_pair(direction):
+	global current_shader_pair
+	if direction == "next":
+		current_shader_pair = (current_shader_pair + 1) % len(shader_pairs)
+	elif direction == "previous":
+		current_shader_pair = (current_shader_pair - 1) % len(shader_pairs)
+
+	vertex_shader, fragment_shader = shader_pairs[current_shader_pair]
+	rend.setShader(vertexShader=vertex_shader, fragmentShader=fragment_shader)
 
 
 # Bucle principal
@@ -122,15 +130,15 @@ while isRunning:
 			if event.key == pygame.K_ESCAPE:
 				isRunning = False
 
-			if event.key in shaders_mapping:
-				# Cambia los shaders segun la tecla presionada
-				vertex_shader, fragment_shader = shaders_mapping[event.key]
-				rend.setShader(vertexShader=vertex_shader, fragmentShader=fragment_shader)
+			if event.key == pygame.K_UP:
+				change_shader_pair("previous")
+
+			if event.key == pygame.K_DOWN:
+				change_shader_pair("next")
 				
 			if event.key == pygame.K_LEFT:
 				change_model("previous")
 
-			# Cambiar al modelo siguiente con la flecha derecha
 			if event.key == pygame.K_RIGHT:
 				change_model("next")
 
