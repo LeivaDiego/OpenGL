@@ -1,6 +1,39 @@
 # En OpenGL, los shaders se escriben en lenguaje GLSL
 # Graphics Library Shader Language
 
+
+# ----------------------- Skybox Shaders -----------------------#
+skybox_vertex = '''
+#version 450 core
+
+layout (location = 0) in vec3 position;
+
+uniform mat4 viewMatrix;
+uniform mat4 projectionMatrix;
+
+out vec3 texCoords;
+
+void main()
+{
+	texCoords = position;
+	gl_Position = projectionMatrix * viewMatrix * vec4(position, 1.0);
+}
+'''
+
+skybox_fragment = '''
+#version 450 core
+
+uniform samplerCube skybox;
+in vec3 texCoords;
+
+out vec4 fragmentColor;
+
+void main()
+{
+	fragmentColor = texture(skybox, texCoords);
+}
+'''
+
 # ----------------------- Vertex Shaders -----------------------#
 
 # Shader de vertices estandar

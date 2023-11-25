@@ -23,6 +23,15 @@ clock = pygame.time.Clock()
 # Creacion del objeto Renderer
 rend = Renderer(screen)
 
+skyboxTextures = ["skybox/right.jpg",
+				  "skybox/left.jpg",
+				  "skybox/top.jpg",
+				  "skybox/bottom.jpg",
+				  "skybox/front.jpg",
+				  "skybox/back.jpg"]
+
+rend.createSkybox(skyboxTextures, skybox_vertex, skybox_fragment)
+
 # Establecimiento de los shaders para el renderizado
 rend.setShader(vertexShader = vertex_shader, 
 			   fragmentShader = fragment_shader)
@@ -34,6 +43,8 @@ model.position.z = -7.5
 
 # Anadir el modelo a la escena
 rend.scene.append(model)
+
+rend.target.z = model.position.z
 
 # Variable para controlar el ciclo principal
 isRunning = True
@@ -127,6 +138,7 @@ while isRunning:
 
 	# Actualizar el tiempo transcurrido y renderizar la escena
 	rend.elapsedTime += deltaTime
+	rend.update()
 	rend.render()
 
 	# Actualizar la pantalla

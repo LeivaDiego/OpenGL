@@ -26,12 +26,14 @@ class Model(object):
 		self.rotation = glm.vec3(0, 0, 0) # Rotacion
 		self.scale = glm.vec3(1, 1, 1) # Escala
 
+
 	def loadTexture(self, texturePath):
 		# Carga de la textura
 
 		self.textureSurface = pygame.image.load(texturePath) # Cargar superficie de la textura
 		self.textureData = pygame.image.tostring(self.textureSurface, "RGB", True) # Datos de la textura
 		self.textureBuffer = glGenTextures(1) # Generacion del buffer de textura
+
 
 	def getModelMatrix(self):
 		# Obtener la matriz del modelo
@@ -50,6 +52,7 @@ class Model(object):
 		scaleMatrix = glm.scale(identity, self.scale)
 
 		return translationMatrix * rotationMatrix * scaleMatrix # Retorna la matriz compuesta
+
 
 	def render(self):
 		# Renderizado del modelo
