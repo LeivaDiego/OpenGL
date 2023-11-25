@@ -243,6 +243,9 @@ class Renderer(object):
 
 			glUniform1f(glGetUniformLocation(self.activeShader, "time"), self.elapsedTime)
 
+			glUniform3fv(glGetUniformLocation(self.activeShader, "camPosition"), 
+								1, GL_FALSE, glm.value_ptr(self.camPosition))
+
 		for obj in self.scene:
 			if self.activeShader is not None:
 				glUniformMatrix4fv(glGetUniformLocation(self.activeShader,"modelMatrix"),
