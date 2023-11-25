@@ -37,6 +37,8 @@ class Renderer(object):
 		self.viewMatrix = self.getViewMatrix()
 		self.camMatrix = self.getCamMatrix()
 		
+		self.pixelSize = 0.2
+		
 		# Camara
 		self.target = glm.vec3(0,0,0)
 
@@ -241,10 +243,12 @@ class Renderer(object):
 			glUniformMatrix4fv(glGetUniformLocation(self.activeShader,"camMatrix"),
 							   1, GL_FALSE, glm.value_ptr(self.getCamMatrix()))
 
-			glUniform1f(glGetUniformLocation(self.activeShader, "time"), self.elapsedTime)
-
 			glUniform3fv(glGetUniformLocation(self.activeShader, "camPosition"), 
 								1, GL_FALSE, glm.value_ptr(self.camPosition))
+			
+			glUniform1f(glGetUniformLocation(self.activeShader, "pixelSize"), self.pixelSize)
+			
+			glUniform1f(glGetUniformLocation(self.activeShader, "time"), self.elapsedTime)
 
 		for obj in self.scene:
 			if self.activeShader is not None:

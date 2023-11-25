@@ -159,18 +159,20 @@ while isRunning:
 
 			if event.key == pygame.K_RIGHT:
 				change_model("next")
+				
 
-		# Inicio de la rotacion del modelo con el mouse
+		# Inicio de la rotacion del camara con el mouse
 		elif event.type == pygame.MOUSEBUTTONDOWN:
 			if event.button == 1: 
 				mouse_dragging = True
 				last_mouse_position = pygame.mouse.get_pos()
 
-		# Fin de la rotacion del modelo con el mouse
+		# Fin de la rotacion del camara con el mouse
 		elif event.type == pygame.MOUSEBUTTONUP:
 			if event.button == 1:  
 				mouse_dragging = False
 
+		# Rotacion de camara basada en mouse input
 		elif event.type == pygame.MOUSEMOTION:
 			if mouse_dragging:
 				new_position = pygame.mouse.get_pos()
@@ -187,12 +189,22 @@ while isRunning:
 
 				last_mouse_position = new_position
 
-		# Zoom de la cámara con la rueda del mouse
+		# Zoom de la camara con la rueda del mouse
 		elif event.type == pygame.MOUSEWHEEL:
 			if event.y > 0 and radius > distance * 0.5:
 				radius -= zoom_sensitive
 			elif event.y < 0 and radius < distance * 1.5:
 				radius += zoom_sensitive
+		
+		# Aumentar pixelSize
+		if keys[pygame.K_w]:
+			rend.pixelSize += 0.1
+			rend.pixelSize = min(rend.pixelSize, 0.8)  # Asegurar que no exceda 0.8
+
+		# Disminuir pixelSize
+		if keys[pygame.K_s]:
+			rend.pixelSize -= 0.1
+			rend.pixelSize = max(rend.pixelSize, 0.1)  # Asegurar que no sea menor que 0.1
 
 
 	# Actualizar el tiempo transcurrido y renderizar la escena
