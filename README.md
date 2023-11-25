@@ -1,4 +1,24 @@
 # Renderer con OpenGL en Python
+## Entrega Final
+### Instrucciones de Uso
+**Movimiento de camara**
+- Para mover la camara alrededor del modelo basta con dejar presionado el click y arrastrar el puntero
+  + Arrastrar de forma horizontal para rotar la camara alrededor del modelo de forma horizontal
+  + Arrastar de forma vertical para mover la camara de arriba a abajo
+  + Puede combinar ambos movimientos si lo desea
+    
+- Para hacer zoom in mover el mouse wheel para arriba
+- para hacer zoom out mover el mouse wheel para abajo
+
+**Navegacion de modelos y shaders**
+- Para cambiar de modelo solo tiene que presionar la tecla flecha izquierda o flecha derecha
+  -   Para visualizar el siguiente modelo presione derecha
+  -  Para visualizar el modelo anterior presione izquierda
+
+- Para cambiar los shader solo tiene que presionar las teclas flecha arriba, flecha abajo 
+  -   Para activar el shader siguiente presione arriba
+  -   Para activar el shader anterior presione abajo
+
 ## Entrega OGL1: 3D Models & Transforms
 La entrega se encuentra en la rama 'OGL1'
 ### Preview
