@@ -1,5 +1,8 @@
 # Renderer con OpenGL en Python
 ## Entrega Final
+**Musica**
+
+Tema principal de Super Mario Bros. (1985)
 ### Instrucciones de Uso
 **Movimiento de camara**
 - Para mover la camara alrededor del modelo basta con dejar presionado el click y arrastrar el puntero
@@ -34,3 +37,4 @@
   - Para disminuir el tamaño del pixel presione s
 
  ![Pixel-Controller](https://github.com/LeivaDiego/Renderer_OpenGL/assets/110699607/d3353590-ea5c-4a5f-9a78-08e3b3e5f3ca)
+
