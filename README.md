@@ -1,8 +1,11 @@
 # Renderer con OpenGL en Python
 ## Entrega Final
 **Musica**
-
 Tema principal de Super Mario Bros. (1985)
+https://github.com/LeivaDiego/Renderer_OpenGL/assets/110699607/accf4cf1-86ef-4dc8-9289-2ca02b7f89c1
+
+
+
 ### Instrucciones de Uso
 **Movimiento de camara**
 - Para mover la camara alrededor del modelo basta con dejar presionado el click y arrastrar el puntero
